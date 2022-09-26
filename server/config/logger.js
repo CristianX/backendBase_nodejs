@@ -9,7 +9,7 @@ const logger = createLogger({
 });
 
 // Configurando requests logger
-morgan.token('id', req => req.id);
+morgan.token('id', (req) => req.id);
 
 const requestFormat = ':remote-addr[:date[iso]] :id ":method :url" :status';
 const requests = morgan(requestFormat, {
@@ -24,5 +24,11 @@ const requests = morgan(requestFormat, {
 
 // Attach to logger object
 logger.requests = requests;
+
+// Dando formato a los request logger e implementando logger object
+logger.header = (req) => {
+  const date = new Date().toISOString();
+  return `${req.ip} [${date}] ${req.id} "${req.method} ${req.originalUrl}"`;
+};
 
 module.exports = logger;
