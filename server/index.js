@@ -2,7 +2,7 @@ const express = require('express');
 const requestId = require('express-request-id')();
 
 const logger = require('./config/logger');
-const api = require('./api');
+const api = require('./api/v1');
 
 // Inciciando app
 const app = express();
@@ -17,7 +17,9 @@ app.use(logger.requests);
 //   );
 // });
 
+// Levantando router y rutas
 app.use('/api', api);
+app.unsubscribe('/api/v1', api);
 
 // Ruta no encontrada
 app.use((req, res, next) => {
