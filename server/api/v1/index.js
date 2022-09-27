@@ -1,9 +1,7 @@
 const router = require('express').Router();
 
-router.route('/tasks').get((req, res, next) => {
-  res.json({
-    message: 'obtener todos los tasks',
-  });
-});
+const tasks = require('./tasks/routes');
+
+router.use('/tasks', tasks);
 
 module.exports = router;
