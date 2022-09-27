@@ -2,6 +2,7 @@ const express = require('express');
 const requestId = require('express-request-id')();
 
 const logger = require('./config/logger');
+const api = require('./api');
 
 // Inciciando app
 const app = express();
@@ -10,11 +11,13 @@ const app = express();
 app.use(requestId);
 app.use(logger.requests);
 
-app.get('/', (req, res, next) => {
-  res.json(
-    'Bienvenido al backend del Sistema de Remates Judiciales del Municipio de Quito'
-  );
-});
+// app.get('/', (req, res, next) => {
+//   res.json(
+//     'Bienvenido al backend del Sistema de Remates Judiciales del Municipio de Quito'
+//   );
+// });
+
+app.use('/api', api);
 
 // Ruta no encontrada
 app.use((req, res, next) => {
@@ -27,7 +30,7 @@ app.use((req, res, next) => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
-  const { message, statusCode = 500, level = 'error'} = err;
+  const { message, statusCode = 500, level = 'error' } = err;
   const log = `${logger.header(req)} ${statusCode} ${message}`;
 
   logger[level](log);
